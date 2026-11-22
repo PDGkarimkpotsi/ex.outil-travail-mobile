@@ -13,6 +13,18 @@ jobs:
       - name: Extraire le projet depuis le ZIP
         run: unzip -o outil_travail_mobile_v4_atelier.zip
 
+      - name: Corriger la configuration Java/Kotlin
+        run: |
+          cat > outil_travail_mobile_v3_usb/app/build.gradle.kts <<'EOF'
+          plugins { id("com.android.application"); id("org.jetbrains.kotlin.android") }
+
+          android { namespace = "com.afribdstudio.outiltravailmobile"; compileSdk = 35
+           defaultConfig { applicationId = "com.afribdstudio.outiltravailmobile"; minSdk = 23; targetSdk = 35; versionCode = 3; versionName = "3.0-USB-alpha" }
+           compileOptions { sourceCompatibility = JavaVersion.VERSION_17; targetCompatibility = JavaVersion.VERSION_17 }
+           kotlinOptions { jvmTarget = "17" }
+          }
+          EOF
+
       - name: Installer JDK 17
         uses: actions/setup-java@v4
         with:
